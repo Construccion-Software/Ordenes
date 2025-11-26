@@ -1,4 +1,4 @@
-name: Build and Push Docker Image
+﻿name: Build and Push Docker Image
 
 on:
   push:
@@ -7,13 +7,13 @@ on:
       - main
       - master
     tags:
-      - 'v*'
+      - "v*"
   workflow_dispatch:
 
 env:
   REGISTRY: docker.io
   IMAGE_NAME: jhongarcia252330/ordenes-api
- 
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -58,4 +58,4 @@ jobs:
           cache-to: type=gha,mode=max
 
       - name: Image digest
-        run: echo "Digest: ${{ steps.build.outputs.digest }}"
+        run: echo Digest=${{ steps.build.outputs.digest }}

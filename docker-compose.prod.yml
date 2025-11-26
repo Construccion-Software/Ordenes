@@ -1,0 +1,50 @@
+version: "3.9"
+
+services:
+  ordenes-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    image: ordenes-api:latest
+    container_name: ordenes-api-prod
+    restart: always
+    ports:
+      - "${ORDENES_API_PORT:-5000}:5000"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:5000
+      MONGODB_CONNECTION_STRING: ${MONGODB_CONNECTION_STRING:-mongodb://ordenes_prod:ordenes_prod@mongo:27017}
+      MONGODB_DATABASE_NAME: ${MONGODB_DATABASE_NAME:-ordenes}
+      MONGODB_ORDENES_COLLECTION_NAME: ${MONGODB_ORDENES_COLLECTION_NAME:-ordenes}
+      MONGODB_MEDICAMENTOS_COLLECTION_NAME: ${MONGODB_MEDICAMENTOS_COLLECTION_NAME:-ordenes_medicamentos}
+      MONGODB_PROCEDIMIENTOS_COLLECTION_NAME: ${MONGODB_PROCEDIMIENTOS_COLLECTION_NAME:-ordenes_procedimientos}
+      MONGODB_AYUDAS_DIAGNOSTICAS_COLLECTION_NAME: ${MONGODB_AYUDAS_DIAGNOSTICAS_COLLECTION_NAME:-ordenes_ayudas}
+      Logging__LogLevel__Default: Information
+      Logging__LogLevel__Microsoft.AspNetCore: Warning
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  mongo:
+    image: mongo:7.0
+    container_name: ordenes-mongo-prod
+    profiles:
+      - local-db
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME:-ordenes_prod}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD:-ordenes_prod}
+    volumes:
+      - mongo-prod-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+
+volumes:
+  mongo-prod-data:

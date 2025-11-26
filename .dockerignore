@@ -1,0 +1,42 @@
+**/.classpath
+**/.dockerignore
+**/.env
+**/.env.local
+**/.git
+**/.gitattributes
+**/.gitignore
+**/.project
+**/.settings
+**/.toolstarget
+**/.vs
+**/.vscode
+**/bin
+**/obj
+**/.nuget/
+**/profile
+**/project.lock.json
+**/project.fragment.lock.json
+**/secrets.json
+**/node_modules
+npm-debug.log
+.DS_Store
+Thumbs.db
+.editorconfig
+*.sln
+.idea/
+.vscode/
+*.code-workspace
+.git/
+.gitignore
+
+# Local environment
+.env
+.env.local
+.env.*.local
+
+# Development
+appsettings.Development.json
+
+# Test
+test/
+tests/

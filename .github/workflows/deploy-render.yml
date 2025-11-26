@@ -20,5 +20,4 @@ jobs:
       - name: Missing deploy hook warning
         if: env.SERVICE_HOOK == ''
         run: |
-          echo "Render deploy hook secret (RENDER_ORDENES_DEPLOY_HOOK) is not configured." >&2
-          exit 1
+          echo "Render deploy hook secret (RENDER_ORDENES_DEPLOY_HOOK) is not configured; skipping Render deployment." >&2
